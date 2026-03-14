@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Anchor - 기독교 보수주의 세계관 학습</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700&family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0f172a; /* 딥 네이비 - 권위와 신뢰 */
+            --accent-color: #991b1b;  /* 버건디 - 전통과 열정 */
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-color);
+        }
+
+        header h1 {
+            font-family: 'Noto Serif KR', serif;
+            margin: 0;
+            font-size: 2rem;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            opacity: 0.8;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: -30px auto 0;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 0;
+        }
+
+        /* 도서 카드 스타일 */
+        .book-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+        }
+
+        .book-badge {
+            flex: 0 0 auto;
+            background: #f1f5f9;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        /* 퀴즈 스타일 */
+        .quiz-container {
+            min-height: 200px;
+        }
+
+        .quiz-q {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background: #f1f5f9;
+            border-color: var(--primary-color);
+        }
+
+        .feedback {
+            display: none;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        /* 현상 분석 가이드 */
+        .guide-item {
+            border-bottom: 1px solid #f1f5f9;
+            padding: 12px 0;
+        }
+
+        .guide-item:last-child { border: none; }
+        .guide-label {
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .next-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>The Anchor</h1>
+    <p>기독교 보수주의 가치관 학습 플랫폼</p>
+</header>
+
+<div class="container">
+    <section class="card">
+        <h2>📚 학습 라이브러리</h2>
+        <div class="book-scroll">
+            <div class="book-badge"><b>정치</b><br>보수주의자의 양심</div>
+            <div class="book-badge"><b>교육</b><br>개혁주의 자녀교육</div>
+            <div class="book-badge"><b>국가</b><br>칼빈주의 강연</div>
+            <div class="book-badge"><b>문화</b><br>기독교 세계관</div>
+            <div class="book-badge"><b>윤리</b><br>순전한 기독교</div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>🧩 오늘의 세계관 퀴즈</h2>
+        <div id="quiz-box" class="quiz-container">
+            </div>
+        <div id="feedback-box" class="feedback"></div>
+        <button id="next-quiz" class="next-btn" style="display:none;" onclick="loadQuiz()">다음 문제 풀기</button>
+    </section>
+
+    <section class="card">
+        <h2>🔍 사회 현상 분석 필터</h2>
+        <div class="guide-item">
+            <div class="guide-label">인간관 (Anthropology)</div>
+            <div>인간의 본성이 타락했음을 인지하고 있는가? 완벽한 시스템을 맹신하는가?</div>
+        </div>
+        <div class="guide-item">
+            <div class="guide-label">영역 주권 (Sphere Sovereignty)</div>
+            <div>가정이나 교회의 고유한 영역을 국가가 침해하고 있지는 않은가?</div>
+        </div>
+        <div class="guide-item">
+            <div class="guide-label">자유와 책임 (Liberty)</div>
+            <div>정부의 지원이 개인의 자립 의지와 자유를 훼손하고 있지는 않은가?</div>
+        </div>
+    </section>
+</div>
+
+<footer>
+    &copy; 2024 The Anchor Project. All Rights Reserved.
+</footer>
+
+<script>
+    // 12권의 도서 철학을 담은 퀴즈 데이터베이스
+    const quizData = [
+        {
+            q: "배리 골드워터의 '보수주의자의 양심'에 따르면, 보수주의자가 가장 경계해야 할 것은 무엇입니까?",
+            options: ["경제적 불평등", "중앙 정부의 권력 집중", "전통 문화의 소멸"],
+            correct: 1,
+            desc: "골드워터는 국가 권력이 비대해질수록 개인의 자유와 양심이 억압받는다고 보았습니다."
+        },
+        {
+            q: "네덜란드 개혁주의 관점에서 자녀 교육의 일차적 책임과 주권은 누구에게 있습니까?",
+            options: ["국가와 교육부", "지역 사회 공동체", "하나님 앞에 선 부모"],
+            correct: 2,
+            desc: "아브라함 카이퍼와 개혁주의자들은 교육의 주권이 국가가 아닌 가정(부모)에 있다고 강조합니다."
+        },
+        {
+            q: "낸시 피어시의 '기독교 세계관'에서 말하는 현대 문화의 가장 큰 오류는 무엇입니까?",
+            options: ["과학 기술의 발전", "사실(공적)과 가치(사적)의 분리", "지나친 종교 자유"],
+            correct: 1,
+            desc: "피어시는 진리가 '공적 사실'과 '사적 가치'로 나뉘어 기독교 가치가 사생활로 밀려나는 것을 비판합니다."
+        }
+    ];
+
+    let currentQuizIndex = 0;
+
+    function loadQuiz() {
+        const quizBox = document.getElementById('quiz-box');
+        const feedbackBox = document.getElementById('feedback-box');
+        const nextBtn = document.getElementById('next-btn');
+        
+        feedbackBox.style.display = 'none';
+        document.getElementById('next-quiz').style.display = 'none';
+
+        const data = quizData[currentQuizIndex];
+        let html = `<div class="quiz-q">${data.q}</div>`;
+        
+        data.options.forEach((opt, idx) => {
+            html += `<button class="option-btn" onclick="selectOption(${idx})">${opt}</button>`;
+        });
+        
+        quizBox.innerHTML = html;
+    }
+
+    function selectOption(index) {
+        const feedbackBox = document.getElementById('feedback-box');
+        const data = quizData[currentQuizIndex];
+        
+        feedbackBox.style.display = 'block';
+        if(index === data.correct) {
+            feedbackBox.style.backgroundColor = '#dcfce7';
+            feedbackBox.style.color = '#166534';
+            feedbackBox.innerHTML = `<b>✅ 정답입니다!</b><br>${data.desc}`;
+        } else {
+            feedbackBox.style.backgroundColor = '#fee2e2';
+            feedbackBox.style.color = '#991b1b';
+            feedbackBox.innerHTML = `<b>❌ 다시 생각해보세요.</b><br>힌트: 보수주의는 개인의 자유와 영역별 자율성을 중시합니다.`;
+        }
+
+        document.getElementById('next-quiz').style.display = 'block';
+        currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
+    }
+
+    // 초기 실행
+    window.onload = loadQuiz;
+</script>
+
+</body>
+</html>
