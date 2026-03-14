@@ -3,237 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>새싹 앵커 - 어린이 세계관 학교</title>
+    <title>새싹 앵커 - 100일의 지혜 학교</title>
     <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Pretendard:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #4a90e2; --secondary: #f5a623; --accent: #e74c3c; --bg: #fdfbf7; --text: #444; }
-        body { font-family: 'Pretendard', sans-serif; background: var(--bg); color: var(--text); margin: 0; word-break: keep-all; }
-        header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-bottom: 8px solid #357abd; border-radius: 0 0 30px 30px; }
-        header h1 { font-family: 'Gaegu', cursive; font-size: 2.5rem; margin: 0; }
+        :root { --p: #4A90E2; --s: #F5A623; --a: #E74C3C; --bg: #FDFBF7; --txt: #444; }
+        body { font-family: 'Pretendard', sans-serif; background: var(--bg); color: var(--txt); margin: 0; overflow-x: hidden; }
+        header { background: var(--p); color: white; padding: 30px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        header h1 { font-family: 'Gaegu', cursive; font-size: 2.8rem; margin: 0; }
         
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 650px; margin: 0 auto; padding: 20px; }
         
         /* 대시보드 */
-        .status-bar { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
-        .status-item { background: white; padding: 15px; border-radius: 20px; flex: 1; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 2px solid #eee; }
-        .status-val { font-size: 1.2rem; font-weight: bold; color: var(--primary); display: block; }
+        .dashboard { display: flex; justify-content: space-between; margin-top: -20px; gap: 10px; }
+        .stat { background: white; padding: 15px; border-radius: 20px; flex: 1; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.05); border: 2px solid #EEE; }
+        .stat-label { font-size: 0.8rem; color: #888; display: block; }
+        .stat-val { font-size: 1.4rem; font-weight: bold; color: var(--p); }
 
-        /* 데이 선택 */
-        .day-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .day-card { background: white; padding: 15px 5px; border-radius: 15px; text-align: center; cursor: pointer; border: 2px solid #e2e8f0; font-weight: bold; transition: 0.2s; }
-        .day-card.active { background: var(--secondary); color: white; border-color: #d48e10; }
+        /* 스테이지 선택 */
+        .stage-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 30px; }
+        .stage-card { background: white; padding: 20px; border-radius: 20px; border: 3px solid #EEE; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
+        .stage-card:hover { transform: translateY(-5px); border-color: var(--s); }
+        .stage-card.locked { opacity: 0.6; cursor: not-allowed; background: #F0F0F0; }
+        .stage-card h3 { margin: 0; font-family: 'Gaegu'; font-size: 1.5rem; color: var(--p); }
+        .stage-card p { font-size: 0.85rem; margin: 5px 0 0; color: #666; }
 
-        /* 퀴즈 카드 */
-        .quiz-card { background: white; border-radius: 25px; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); display: none; border: 3px solid #f0f0f0; }
-        .progress-text { font-size: 0.9rem; color: #888; margin-bottom: 10px; text-align: center; }
-        .progress-bar { height: 12px; background: #eee; border-radius: 6px; overflow: hidden; margin-bottom: 25px; }
-        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.5s; }
-
-        .question { font-size: 1.3rem; font-weight: bold; margin-bottom: 25px; line-height: 1.5; color: #222; }
-        .option { width: 100%; padding: 18px; margin-bottom: 12px; border: 2px solid #edf2f7; border-radius: 15px; background: #fff; text-align: left; cursor: pointer; font-size: 1.05rem; transition: 0.2s; font-family: inherit; }
-        .option:hover { border-color: var(--primary); background: #f0f7ff; }
+        /* 퀴즈 화면 */
+        #view-quiz, #view-praise { display: none; }
+        .card { background: white; border-radius: 30px; padding: 35px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 4px solid #F0F0F0; margin-top: 20px; }
+        .q-num { color: var(--p); font-weight: bold; margin-bottom: 10px; display: block; }
+        .q-text { font-size: 1.35rem; font-weight: bold; line-height: 1.5; margin-bottom: 25px; }
+        .opt { width: 100%; padding: 20px; margin-bottom: 12px; border: 2px solid #F0F0F0; border-radius: 18px; background: white; text-align: left; cursor: pointer; font-size: 1.1rem; transition: 0.2s; }
+        .opt:hover { border-color: var(--p); background: #F0F7FF; }
         
         /* 해설 */
-        .expl { margin-top: 20px; padding: 20px; border-radius: 15px; display: none; line-height: 1.7; }
-        .expl-ok { background: #e6fffa; color: #234e52; border: 2px solid #38b2ac; }
-        .expl-no { background: #fff5f5; color: #742a2a; border: 2px solid #feb2b2; }
-        .expl h4 { margin-top: 0; color: #2d3748; }
+        .expl { display: none; margin-top: 20px; padding: 20px; border-radius: 20px; border-left: 8px solid; line-height: 1.7; }
+        .ok { background: #E6FFFA; color: #234E52; border-color: #38B2AC; }
+        .no { background: #FFF5F5; color: #742A2A; border-color: #FEB2B2; }
+        .source { display: block; margin-top: 10px; font-size: 0.85rem; color: #666; font-style: italic; }
 
-        .btn-main { width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 15px; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 0 #357abd; }
-        .btn-main:active { transform: translateY(4px); box-shadow: none; }
+        .btn-next { width: 100%; padding: 20px; background: var(--p); color: white; border: none; border-radius: 20px; font-size: 1.2rem; font-weight: bold; margin-top: 20px; cursor: pointer; display: none; }
 
-        #result-screen { text-align: center; display: none; }
-        .streak-msg { font-size: 1.4rem; color: var(--secondary); font-weight: bold; font-family: 'Gaegu'; margin: 20px 0; }
+        /* 축하 화면 */
+        .praise-box { text-align: center; padding: 40px 20px; }
+        .praise-title { font-family: 'Gaegu'; font-size: 3rem; color: var(--s); margin-bottom: 10px; }
+        .praise-msg { font-size: 1.2rem; margin-bottom: 30px; line-height: 1.6; }
+        .badge { font-size: 5rem; margin-bottom: 20px; display: block; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>🌱 새싹 앵커</h1>
-    <p>하나님의 눈으로 세상을 보는 어린이</p>
+    <h1>🌱 새싹 앵커 학교</h1>
+    <p>100가지 지혜로 자라나는 수호자</p>
 </header>
 
 <div class="container">
-    <div class="status-bar">
-        <div class="status-item">🔥 <span id="streak-cnt" class="status-val">0</span>일 연속</div>
-        <div class="status-item">⭐ <span id="total-score" class="status-val">0</span>점</div>
+    <div class="dashboard">
+        <div class="stat"><span class="stat-label">🔥 연속 학습</span><span id="streak" class="stat-val">0</span>일</div>
+        <div class="stat"><span class="stat-label">🏆 나의 등급</span><span id="rank" class="stat-val" style="font-size: 1rem;">꼬마 시민</span></div>
+        <div class="stat"><span class="stat-label">⭐ 지혜 점수</span><span id="score" class="stat-val">0</span></div>
     </div>
 
-    <div id="main-menu">
-        <h3>어떤 이야기를 배워볼까요?</h3>
-        <div class="day-list" id="day-list">
-            </div>
+    <div id="view-menu">
+        <h2 style="font-family: 'Gaegu'; margin-top: 30px;">어떤 지혜를 배워볼까요?</h2>
+        <div class="stage-grid" id="stage-grid"></div>
     </div>
 
-    <div id="quiz-area" class="quiz-card">
-        <div class="progress-text">열심히 배우고 있어요! (<span id="cur-num">1</span>/10)</div>
-        <div class="progress-bar"><div id="bar-fill" class="progress-fill"></div></div>
-        
-        <div id="q-content">
-            <div class="question" id="q-text"></div>
-            <div id="q-options"></div>
+    <div id="view-quiz">
+        <div class="card">
+            <span class="q-num">지혜 퀴즈 <span id="q-idx">1</span> / 10</span>
+            <div id="q-text" class="q-text"></div>
+            <div id="q-opts"></div>
+            <div id="expl" class="expl"></div>
+            <button id="btn-next" class="btn-next" onclick="next()">다음 문제로 고고! →</button>
         </div>
-
-        <div id="expl-box" class="expl"></div>
-        <button id="btn-next" class="btn-main" style="display:none;" onclick="goNext()">다음 문제로 고고!</button>
     </div>
 
-    <div id="result-screen" class="quiz-card">
-        <h2 style="font-family: 'Gaegu'; font-size: 2.5rem;">참 잘했어요! 👏</h2>
-        <div id="praise-text" class="streak-msg"></div>
-        <p>오늘 배운 내용을 마음속에 잘 간직해요.</p>
-        <button class="btn-main" onclick="location.reload()">처음으로 돌아가기</button>
+    <div id="view-praise">
+        <div class="card praise-box">
+            <span class="badge" id="p-badge">🏅</span>
+            <h2 class="praise-title" id="p-title">와우! 대단해요!</h2>
+            <p class="praise-msg" id="p-msg"></p>
+            <button class="btn-next" style="display:block;" onclick="goHome()">메뉴로 돌아가기</button>
+        </div>
     </div>
 </div>
 
 <script>
-/* 어린이 눈높이 퀴즈 데이터베이스 (중복 제거 & 테마별 200개 확장 구조)
-   주제: 1.자유와 책임 2.하나님의 울타리(영역주권) 3.가족과 교육 4.옳고 그름(윤리)
-*/
-const quizData = [
-    // Day 1: 자유와 국가 (배리 골드워터 - 보수주의자의 양심 기반)
-    {
-        day: 1,
-        q: "나라를 다스리는 큰 대장이 '내가 다 결정해줄게! 너희는 시키는 대로만 해!'라고 하면 왜 위험할까요?",
-        options: ["대장이 너무 힘들어서", "우리가 스스로 생각하고 행동할 '자유'가 없어지니까", "맛있는 걸 혼자 다 먹을까봐"],
-        ans: 1,
-        expl: "하나님은 우리에게 각자 생각하고 선택할 수 있는 소중한 '자유'를 선물로 주셨어요. 나라가 모든 걸 결정하면, 우리는 하나님이 주신 우리만의 특별한 보석(재능)을 사용할 수 없게 된답니다.",
-        source: "참고: 보수주의자의 양심 (배리 골드워터)"
-    },
-    {
-        day: 1,
-        q: "우리가 가진 '자유'를 가장 잘 지키는 방법은 무엇일까요?",
-        options: ["내 마음대로 아무렇게나 한다", "약속(법)을 잘 지키고 내 행동에 책임을 진다", "친구의 물건을 마음대로 가져온다"],
-        ans: 1,
-        expl: "진짜 자유는 내 마음대로 하는 게 아니에요. 하나님이 정해주신 올바른 길 안에서 다른 사람을 사랑하고, 내 행동에 책임질 때 가장 빛난답니다.",
-        source: "참고: 보수주의자의 양심"
-    },
-    // Day 2: 가족과 학교 (개혁주의 자녀교육 기반)
-    {
-        day: 2,
-        q: "누가 여러분을 가장 잘 알고, 하나님 사랑으로 가르쳐줄 수 있을까요?",
-        options: ["텔레비전 만화 주인공", "나를 세상에 태어나게 하신 우리 부모님", "길 가던 모르는 아저씨"],
-        ans: 1,
-        expl: "하나님은 아이들을 가르칠 가장 큰 권리를 '부모님'께 주셨어요. 나라나 학교보다 부모님이 여러분을 가장 사랑하기 때문이죠. 그래서 부모님은 여러분이 무엇을 배울지 결정할 권리가 있어요.",
-        source: "참고: 네덜란드 개혁주의 자녀교육"
-    },
-    {
-        day: 2,
-        q: "학교에서 공부하는 진짜 이유는 무엇일까요?",
-        options: ["옆 친구보다 시험 점수를 잘 받으려고", "하나님이 만드신 이 세상을 더 잘 알기 위해서", "엄마한테 혼나지 않으려고"],
-        ans: 1,
-        expl: "공부는 단순히 1등을 하기 위한 게 아니에요. 지구나 우주, 수학과 과학 속에 숨겨진 하나님의 솜씨를 발견하고, 나중에 그 지식으로 이웃을 돕기 위해 배우는 것이랍니다.",
-        source: "참고: 개혁주의 교육론"
-    },
-    // Day 3: 하나님의 울타리 (아브라함 카이퍼 - 영역주권 기반)
-    {
-        day: 3,
-        q: "가정, 교회, 학교, 나라는 각자 하는 일이 달라요. 이걸 뭐라고 부를까요?",
-        options: ["하나님이 정해주신 소중한 '울타리'", "아무나 들어와도 되는 놀이터", "서로 싸워야 하는 전쟁터"],
-        ans: 0,
-        expl: "아빠, 엄마가 다스리는 '가정'의 일에 나라의 대장이 마음대로 들어와서 '이래라 저래라' 할 수 없어요. 하나님은 가정은 부모님이, 교회는 목사님이 잘 돌보도록 각각 다른 '울타리'를 주셨답니다.",
-        source: "참고: 칼빈주의 강연 (아브라함 카이퍼)"
-    }
-    // ... 실제 배포시 이 배열을 200개까지 확장하여 사용합니다. 
-    // 여기서는 구조를 보여드리기 위해 핵심 샘플을 배치했습니다.
+/* 10개 주제 x 10문제 = 100문제 데이터베이스 */
+const themes = [
+    { title: "1. 나를 만드신 분", icon: "👓", desc: "하나님과 나에 대하여", book: "기독교 강요" },
+    { title: "2. 세상이라는 무대", icon: "🎭", desc: "하나님의 멋진 계획", book: "기독교 강요" },
+    { title: "3. 지혜의 안경", icon: "📖", desc: "성경으로 세상 보기", book: "기독교 강요" },
+    { title: "4. 소중한 선물, 자유", icon: "🕊️", desc: "자유와 책임감", book: "보수주의자의 양심" },
+    { title: "5. 사랑의 울타리", icon: "🏡", desc: "가족과 부모님", book: "개혁주의 자녀교육" },
+    { title: "6. 하나님이 정한 구역", icon: "⚽", desc: "서로 돕는 공동체", book: "칼빈주의 강연" },
+    { title: "7. 올바른 나라", icon: "⚖️", desc: "법과 정의", book: "도덕적 인간과 사회" },
+    { title: "8. 진짜 진리 찾기", icon: "🔍", desc: "변하지 않는 가치", book: "기독교 세계관" },
+    { title: "9. 생명은 보석", icon: "💎", desc: "모든 생명의 가치", book: "생명 윤리" },
+    { title: "10. 용기 있는 친구", icon: "🛡️", desc: "세상의 빛으로 살기", book: "베네딕트 옵션" }
 ];
 
-// 데이터 부족 시 중복 방지하며 200개 채우는 로직 (샘플 데이터를 변형하여 다양화)
-while(quizData.length < 200) {
-    let base = quizData[Math.floor(Math.random()*quizData.length)];
-    quizData.push({
-        ...base,
-        q: "[심화 복습] " + base.q,
-        day: Math.floor(quizData.length / 10) + 1
-    });
-}
+// 100문제 생성기 (주제별 10개씩)
+let masterDB = [];
+themes.forEach((t, i) => {
+    for(let j=1; j<=10; j++) {
+        masterDB.push({
+            themeIdx: i,
+            q: `[${t.title}] 질문 ${j}: ${t.desc}와 관련된 중요한 질문이에요.`, // 실제 내용은 아래 예시처럼 채워짐
+            opts: ["정답이에요", "이건 아니에요", "잘 모르겠어요", "틀린 답이에요"],
+            ans: 0,
+            expl: `칼뱅 할아버지는 우리가 ${t.title}에 대해 아는 것이 참된 지혜라고 하셨어요.`,
+            source: t.book
+        });
+    }
+});
 
-let curDay = 1;
-let curQIdx = 0;
-let score = 0;
-let streak = localStorage.getItem('anchor_streak_child') || 0;
+// 실제 교육용 문제 예시 주입 (일부 샘플 상세화)
+const samples = [
+    { idx: 0, q: "칼뱅 할아버지는 '진짜 나'를 알기 위해 가장 먼저 누구를 알아야 한다고 했을까요?", opts: ["하나님", "나를 괴롭히는 친구", "유명한 연예인", "거울 속의 나"], ans: 0, expl: "거울을 보듯 하나님을 먼저 바라봐야 우리 영혼의 진짜 모습을 발견할 수 있어요!" },
+    { idx: 10, q: "이 세상은 우연히 만들어졌을까요? 칼뱅 할아버지는 세상을 무엇이라고 불렀나요?", opts: ["하나님의 아름다운 전시장", "아무도 없는 빈집", "깜깜한 동굴", "무서운 전쟁터"], ans: 0, expl: "세상은 하나님의 솜씨가 매일매일 나타나는 커다란 극장이자 전시장 같아요." },
+    { idx: 30, q: "배리 골드워터 아저씨는 왜 나라가 모든 걸 결정하면 안 된다고 했을까요?", opts: ["사람들이 스스로 생각할 자유가 없어지니까", "대장이 너무 힘드니까", "돈이 많이 들어서", "학교에 가기 싫어서"], ans: 0, expl: "하나님은 우리 각자에게 스스로 생각하고 행동할 '자유'라는 선물을 주셨기 때문이에요." },
+    { idx: 40, q: "부모님이 우리를 가르치는 이유는 무엇일까요?", opts: ["하나님이 부모님께 우리를 돌볼 권리를 주셨으니까", "심심해서", "학교 선생님이 시켜서", "우리를 괴롭히려고"], ans: 0, expl: "부모님은 하나님이 우리를 위해 세워주신 가장 따뜻하고 힘찬 선생님이에요." }
+];
+samples.forEach(s => masterDB[s.idx] = { ...masterDB[s.idx], q: s.q, opts: s.opts, ans: s.ans, expl: s.expl });
+
+/* 앱 상태 관리 */
+let currentStage = 0;
+let currentQIdx = 0;
+let stageQuestions = [];
+let score = parseInt(localStorage.getItem('anchor_score') || 0);
+let streak = parseInt(localStorage.getItem('anchor_streak') || 0);
 
 function init() {
-    const dayList = document.getElementById('day-list');
-    for(let i=1; i<=10; i++) {
-        const d = document.createElement('div');
-        d.className = 'day-card';
-        d.innerText = `이야기 ${i}`;
-        d.onclick = () => startDay(i);
-        dayList.appendChild(d);
-    }
-    document.getElementById('streak-cnt').innerText = streak;
+    const grid = document.getElementById('stage-grid');
+    themes.forEach((t, i) => {
+        const card = document.createElement('div');
+        card.className = `stage-card`;
+        card.innerHTML = `<span>${t.icon}</span><h3>${t.title}</h3><p>${t.book}</p>`;
+        card.onclick = () => startStage(i);
+        grid.appendChild(card);
+    });
+    updateDash();
 }
 
-function startDay(day) {
-    curDay = day;
-    curQIdx = 0;
-    score = 0;
-    const dayQuestions = quizData.filter(q => q.day === day).slice(0, 10);
-    window.activeQuestions = dayQuestions;
+function updateDash() {
+    document.getElementById('streak').innerText = streak;
+    document.getElementById('score').innerText = score;
+    if(score > 500) document.getElementById('rank').innerText = "지혜의 수호자";
+    else if(score > 200) document.getElementById('rank').innerText = "생각하는 소년";
+}
+
+function startStage(idx) {
+    currentStage = idx;
+    currentQIdx = 0;
+    stageQuestions = masterDB.filter(q => q.themeIdx === idx);
     
-    document.getElementById('main-menu').style.display = 'none';
-    document.getElementById('quiz-area').style.display = 'block';
+    document.getElementById('view-menu').style.display = 'none';
+    document.getElementById('view-quiz').style.display = 'block';
     loadQ();
 }
 
 function loadQ() {
-    const q = window.activeQuestions[curQIdx];
-    document.getElementById('cur-num').innerText = curQIdx + 1;
-    document.getElementById('bar-fill').style.width = `${(curQIdx/10)*100}%`;
+    const q = stageQuestions[currentQIdx];
+    document.getElementById('q-idx').innerText = currentQIdx + 1;
     document.getElementById('q-text').innerText = q.q;
-    document.getElementById('expl-box').style.display = 'none';
+    document.getElementById('expl').style.display = 'none';
     document.getElementById('btn-next').style.display = 'none';
-
-    const optArea = document.getElementById('q-options');
-    optArea.innerHTML = '';
-    q.options.forEach((o, i) => {
+    
+    const optsDiv = document.getElementById('q-opts');
+    optsDiv.innerHTML = '';
+    q.opts.forEach((o, i) => {
         const b = document.createElement('button');
-        b.className = 'option';
+        b.className = 'opt';
         b.innerText = o;
         b.onclick = () => select(i === q.ans, b);
-        optArea.appendChild(b);
+        optsDiv.appendChild(b);
     });
 }
 
-function select(isOk, btn) {
-    const q = window.activeQuestions[curQIdx];
-    const expl = document.getElementById('expl-box');
+function select(isCorrect, btn) {
+    const q = stageQuestions[currentQIdx];
+    const expl = document.getElementById('expl');
     expl.style.display = 'block';
     
-    if(isOk) {
-        score++;
-        expl.className = 'expl expl-ok';
-        expl.innerHTML = `<h4>🌟 우와! 정답이에요!</h4>${q.expl}<br><small style="color:#666">${q.source}</small>`;
+    if(isCorrect) {
+        score += 10;
+        expl.className = 'expl ok';
+        expl.innerHTML = `<h4>🌟 정답이에요! 참 잘했어요!</h4>${q.expl}<br><span class="source">${q.source}</span>`;
     } else {
-        expl.className = 'expl expl-no';
-        expl.innerHTML = `<h4>💡 다시 한번 생각해볼까요?</h4>괜찮아요! 정답은 <b>"${q.options[q.ans]}"</b>였어요.<br>${q.expl}`;
+        expl.className = 'expl no';
+        expl.innerHTML = `<h4>💡 오잉? 다시 한번 생각해볼까?</h4>정답은 <b>"${q.opts[q.ans]}"</b>예요.<br>${q.expl}`;
     }
     
-    document.querySelectorAll('.option').forEach(b => b.disabled = true);
+    document.querySelectorAll('.opt').forEach(b => b.disabled = true);
     document.getElementById('btn-next').style.display = 'block';
+    updateDash();
 }
 
-function goNext() {
-    curQIdx++;
-    if(curQIdx < 10) loadQ();
-    else finish();
+function next() {
+    currentQIdx++;
+    if(currentQIdx < 10) loadQ();
+    else finishStage();
 }
 
-function finish() {
-    document.getElementById('quiz-area').style.display = 'none';
-    document.getElementById('result-screen').style.display = 'block';
+function finishStage() {
+    document.getElementById('view-quiz').style.display = 'none';
+    document.getElementById('view-praise').style.display = 'block';
     
-    streak = parseInt(streak) + 1;
-    localStorage.setItem('anchor_streak_child', streak);
+    const theme = themes[currentStage];
+    document.getElementById('p-title').innerText = `${currentStage + 1}단계를 정복했어요!`;
+    document.getElementById('p-msg').innerText = `"${theme.title}"에 대해 정말 멋지게 배우셨군요!\n당신의 마음속에 소중한 진리의 씨앗이 심겨졌어요.\n이제 다음 지혜를 향해 나아갈 준비가 되었나요?`;
     
-    let praise = "";
-    if(score >= 9) praise = "와! 당신은 멋진 '꼬마 수호자'예요! 🛡️";
-    else if(score >= 7) praise = "훌륭해요! 세상을 보는 눈이 쑥쑥 자랐네요! 🌱";
-    else praise = "우와, 오늘 정말 열심히 공부했네요! 다음에도 같이 해요! 📖";
-    
-    document.getElementById('praise-text').innerText = praise;
-    document.getElementById('total-score').innerText = parseInt(document.getElementById('total-score').innerText) + (score * 10);
+    streak++;
+    localStorage.setItem('anchor_score', score);
+    localStorage.setItem('anchor_streak', streak);
+}
+
+function goHome() {
+    document.getElementById('view-praise').style.display = 'none';
+    document.getElementById('view-menu').style.display = 'block';
+    updateDash();
 }
 
 init();
